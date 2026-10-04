@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include "1-musica.h"
 
-struct Musica{
+struct musica{
     char titulo[100];
     char artista[100];
     int duracao;
 };
 
 Musica criar_musica(char *titulo, char *artista, int duracao){
-    Musica m = malloc(sizeof(struct Musica));
+    Musica m = malloc(sizeof(struct musica));
     if(m != NULL){
         strncpy(m->titulo, titulo, sizeof(m->titulo) - 1); 
         m->titulo[sizeof(m->titulo) - 1] = '\0'; // garantir terminar com '\0'

@@ -1,5 +1,5 @@
 #include <stdlib.h>
-typedef struct Musica* Musica;
+typedef struct musica* Musica;
 
 Musica criar_musica(char *titulo, char *artista, int duracao){};
 
