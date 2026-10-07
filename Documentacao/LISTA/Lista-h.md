@@ -1,178 +1,174 @@
-# 3-lista.h — Documentação
+# 🎵 TAD Lista — `3-lista.h`
 
-## 1. Visão geral
+## 📌 Sobre o arquivo
 
-O arquivo `3-lista.h` é o **cabeçalho (header)** do TAD `Lista`.
+O arquivo `3-lista.h` é o **arquivo de cabeçalho** do TAD `Lista`.
 
-Ele apresenta as operações que podem ser utilizadas por outros arquivos do programa, sem mostrar como a lista é implementada internamente.
+Ele contém as **declarações** das estruturas e funções que podem ser utilizadas para manipular uma lista de músicas.
 
-Na atividade, a lista deve ser **unicamente encadeada** e armazenar músicas. O TAD `Lista` possui operações para criar a lista, inserir, remover, consultar e destruir seus elementos.
+A implementação dessas funções está no arquivo:
 
-A atividade também determina que os TADs `Musica` e `Lista` sejam implementados utilizando **tipos opacos**, de modo que suas estruturas internas não sejam acessadas diretamente pelo programa principal.
+```text
+4-lista.c
+```
 
----
+A lista utiliza o TAD `Musica`, definido anteriormente em:
 
-## 2. Bibliotecas incluídas
-
-### `#include <stdio.h>`
-
-Inclui recursos de entrada e saída da linguagem C.
-
-No código apresentado no `3-lista.h`, não há nenhuma função de entrada ou saída sendo declarada diretamente. Portanto, essa biblioteca não é essencial para as declarações mostradas neste arquivo.
-
-### `#include <stdlib.h>`
-
-Disponibiliza recursos da biblioteca padrão do C, como funções relacionadas ao gerenciamento de memória.
-
-Assim como `stdio.h`, ela não é utilizada diretamente nas declarações apresentadas neste cabeçalho.
-
-### `#include "1-musica.h"`
-
-Inclui o cabeçalho do TAD `Musica`.
-
-Isso é necessário porque as funções da lista recebem e retornam valores do tipo `Musica`.
+```text
+1-musica.h
+```
 
 ---
 
-## 3. `typedef struct elemento* Elemento`
+# 📚 Bibliotecas utilizadas
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include "1-musica.h"
+```
+
+### `stdio.h`
+
+Biblioteca padrão da linguagem C. Fornece recursos de entrada e saída.
+
+### `stdlib.h`
+
+Fornece funções relacionadas à memória dinâmica, como:
+
+```c
+malloc()
+free()
+```
+
+Essas funções são importantes para a criação e destruição dos elementos da lista.
+
+### `1-musica.h`
+
+Inclui o TAD `Musica`, permitindo que a lista armazene músicas.
+
+---
+
+# 🧱 Definição dos tipos
+
+```c
+typedef struct elemento* Elemento;
+
+typedef struct lista* Lista;
+```
+
+Aqui são criados dois tipos que serão utilizados pela lista.
+
+## `Elemento`
 
 ```c
 typedef struct elemento* Elemento;
 ```
 
-Essa linha cria um novo nome para um ponteiro para `struct elemento`.
+`Elemento` representa um **ponteiro para um elemento da lista**.
 
-Em vez de escrever:
+Cada elemento será responsável por armazenar uma música e apontar para o próximo elemento.
 
-```c
-struct elemento*
-```
-
-podemos escrever:
-
-```c
-Elemento
-```
-
-Cada elemento representa um **nó** da lista encadeada.
-
-Conceitualmente:
+Podemos imaginar:
 
 ```text
-Elemento
-   |
-   v
-+-------------------+
-| música            |
-| próximo elemento  | -----> ...
-+-------------------+
++---------+---------+
+| Música  | próximo | ---->
++---------+---------+
 ```
-
-A estrutura completa do elemento não aparece neste arquivo. Ela será definida no arquivo `.c`, mantendo a estrutura interna escondida.
 
 ---
 
-## 4. `typedef struct lista* Lista`
+## `Lista`
 
 ```c
 typedef struct lista* Lista;
 ```
 
-Cria um apelido para um ponteiro para `struct lista`.
+`Lista` representa um **ponteiro para a estrutura que controla a lista**.
 
-Assim:
+Essa estrutura é responsável por guardar informações gerais da lista, como a quantidade de músicas e o primeiro elemento.
 
-```c
-Lista
-```
-
-representa:
-
-```c
-struct lista*
-```
-
-A variável `Lista` será utilizada para representar a lista criada.
-
-Conceitualmente:
+De forma simplificada:
 
 ```text
 Lista
   |
   v
-+----------------------+
-| informações da lista |
-| início               | -----> Elemento
-+----------------------+          |
-                                  v
-                              Elemento
-                                  |
-                                  v
-                                NULL
++----------------+
+| informações    |
+| da lista       |
++----------------+
+       |
+       v
+    Elemento
+       |
+       v
+    Elemento
+       |
+       v
+     NULL
 ```
 
 ---
 
-## 5. `criar_lista`
+# 🛠️ Funções da lista
+
+## 🟢 `criar_lista`
 
 ```c
 Lista criar_lista(void);
 ```
 
-Declara a função responsável por **criar uma nova lista**.
+Cria uma nova lista e retorna seu endereço.
 
 ### Retorno
 
-`Lista` indica que a função retorna uma lista.
-
-Como `Lista` foi definido como:
-
 ```c
-typedef struct lista* Lista;
+Lista
 ```
 
-o retorno é um ponteiro para a estrutura da lista.
+Retorna a lista criada.
 
-### Parâmetro
+### Exemplo
 
-`void` dentro dos parênteses indica que a função **não recebe parâmetros**.
+```c
+Lista li = criar_lista();
+```
 
 ---
 
-## 6. `inserir_no_inicio`
+# ➕ `inserir_no_inicio`
 
 ```c
 int inserir_no_inicio(Lista li, Musica valor_inserido);
 ```
 
-Declara a função que insere uma música **no início da lista**.
+Insere uma música **no começo da lista**.
 
-### Parâmetros
-
-- `li`: lista onde a música será inserida.
-- `valor_inserido`: música que será adicionada.
-
-### Retorno
-
-A função retorna um `int`, utilizado pela implementação para indicar o resultado da operação.
+A nova música passa a ser o primeiro elemento.
 
 ### Exemplo
 
 Antes:
 
 ```text
-[A] -> [B] -> [C] -> NULL
+[Musica A] -> [Musica B] -> NULL
 ```
 
-Depois de inserir `X` no início:
+Depois de inserir `Musica C`:
 
 ```text
-[X] -> [A] -> [B] -> [C] -> NULL
+[Musica C] -> [Musica A] -> [Musica B] -> NULL
 ```
+
+### Retorno
+
+Retorna um `int` indicando se a operação foi realizada com sucesso.
 
 ---
 
-## 7. `inserir_no_final`
+# ➕ `inserir_no_final`
 
 ```c
 int inserir_no_final(Lista li, Musica valor_inserido);
@@ -180,287 +176,293 @@ int inserir_no_final(Lista li, Musica valor_inserido);
 
 Insere uma música **no final da lista**.
 
+### Exemplo
+
 Antes:
 
 ```text
-[A] -> [B] -> [C] -> NULL
+[Musica A] -> [Musica B] -> NULL
 ```
 
-Depois:
+Depois de inserir `Musica C`:
 
 ```text
-[A] -> [B] -> [C] -> [X] -> NULL
+[Musica A] -> [Musica B] -> [Musica C] -> NULL
 ```
 
-- `li`: lista que receberá a música.
-- `valor_inserido`: música que será inserida.
+### Retorno
 
-A função retorna um `int` indicando o resultado da operação.
+Retorna um `int` indicando o resultado da operação.
 
 ---
 
-## 8. `inserir_por_posicao`
+# 📍 `inserir_por_posicao`
 
 ```c
 int inserir_por_posicao(Lista li, int posicao, Musica valor_inserido);
 ```
 
-Insere uma música em uma **posição específica** da lista.
+Insere uma música em uma **posição específica da lista**.
 
-### Parâmetros
+A posição é informada pelo parâmetro:
 
-- `li`: lista onde ocorrerá a inserção.
-- `posicao`: posição em que a música deverá ser inserida.
-- `valor_inserido`: música que será adicionada.
+```c
+int posicao
+```
 
 ### Exemplo
 
-Antes:
+Lista:
 
 ```text
-Posição:  0     1     2
-          ↓     ↓     ↓
-        [A] -> [B] -> [C]
+[Musica A] -> [Musica B] -> [Musica C]
 ```
 
-Inserindo `X` na posição `1`:
+Inserindo `Musica X` na posição 2:
 
 ```text
-Posição:  0     1     2     3
-          ↓     ↓     ↓     ↓
-        [A] -> [X] -> [B] -> [C]
+[Musica A] -> [Musica X] -> [Musica B] -> [Musica C]
 ```
+
+### Parâmetros
+
+| Parâmetro | Função |
+|---|---|
+| `li` | Lista que será modificada |
+| `posicao` | Local onde a música será inserida |
+| `valor_inserido` | Música que será adicionada |
 
 ---
 
-## 9. `remover_a_primeira`
+# ❌ `remover_a_primeira`
 
 ```c
 int remover_a_primeira(Lista li);
 ```
 
-Remove a **primeira música** da lista.
-
-Antes:
-
-```text
-[A] -> [B] -> [C] -> NULL
-```
-
-Depois:
-
-```text
-[B] -> [C] -> NULL
-```
-
-A função retorna um `int` indicando o resultado da remoção.
-
----
-
-## 10. `remover_a_ultima`
-
-```c
-int remover_a_ultima(Lista li);
-```
-
-Remove a **última música** da lista.
-
-Antes:
-
-```text
-[A] -> [B] -> [C] -> NULL
-```
-
-Depois:
-
-```text
-[A] -> [B] -> NULL
-```
-
-A função retorna um `int` indicando o resultado da operação.
-
----
-
-## 11. `remover_por_posicao`
-
-```c
-int remover_por_posicao(Lista li, int posicao);
-```
-
-Remove uma música localizada em uma **posição específica**.
-
-### Parâmetros
-
-- `li`: lista que será alterada.
-- `posicao`: posição da música que será removida.
+Remove a **primeira música da lista**.
 
 ### Exemplo
 
 Antes:
 
 ```text
-Posição:  0     1     2
-          ↓     ↓     ↓
-        [A] -> [B] -> [C]
+[Musica A] -> [Musica B] -> [Musica C]
 ```
 
-Removendo a posição `1`:
+Depois:
 
 ```text
-[A] -> [C] -> NULL
+[Musica B] -> [Musica C]
+```
+
+A primeira música deixa de fazer parte da lista.
+
+---
+
+# ❌ `remover_a_ultima`
+
+```c
+int remover_a_ultima(Lista li);
+```
+
+Remove a **última música da lista**.
+
+### Exemplo
+
+Antes:
+
+```text
+[Musica A] -> [Musica B] -> [Musica C] -> NULL
+```
+
+Depois:
+
+```text
+[Musica A] -> [Musica B] -> NULL
 ```
 
 ---
 
-## 12. `consultar_a_primeira`
+# ❌ `remover_por_posicao`
+
+```c
+int remover_por_posicao(Lista li, int posicao);
+```
+
+Remove a música que está em uma **posição específica**.
+
+### Exemplo
+
+Antes:
+
+```text
+[Musica A] -> [Musica B] -> [Musica C]
+```
+
+Removendo a posição 2:
+
+```text
+[Musica A] -> [Musica C]
+```
+
+### Parâmetros
+
+| Parâmetro | Função |
+|---|---|
+| `li` | Lista que será modificada |
+| `posicao` | Posição da música que será removida |
+
+---
+
+# 🔎 `consultar_a_primeira`
 
 ```c
 Musica consultar_a_primeira(Lista li);
 ```
 
-Consulta a **primeira música** da lista.
+Consulta a **primeira música da lista** sem removê-la.
 
-A função retorna uma `Musica`.
-
-Conceitualmente:
+### Exemplo
 
 ```text
-Lista
-  |
-  v
-[A] -> [B] -> [C]
- ^
- |
- primeira música
+[Musica A] -> [Musica B] -> [Musica C]
+     ↑
+  primeira
 ```
+
+A função retorna a música que está no primeiro elemento.
 
 ---
 
-## 13. `consultar_por_posicao`
+# 🔎 `consultar_por_posicao`
 
 ```c
 Musica consultar_por_posicao(Lista li, int posicao);
 ```
 
-Consulta uma música que está em uma **determinada posição**.
+Consulta uma música localizada em uma **determinada posição**.
 
-### Parâmetros
+A música é retornada sem ser removida da lista.
 
-- `li`: lista que será consultada.
-- `posicao`: posição da música que queremos encontrar.
-
-Exemplo:
+### Exemplo
 
 ```text
-Posição:  0     1     2
-          ↓     ↓     ↓
-        [A] -> [B] -> [C]
+[Musica A] -> [Musica B] -> [Musica C]
+                  ↑
+               posição
 ```
 
-Consultando a posição `1`:
-
-```text
-Resultado -> [B]
-```
+Se a posição informada for a de `Musica B`, a função retorna essa música.
 
 ---
 
-## 14. `consultar_qtd_de_musicas_na_lista`
+# 🔢 `consultar_qtd_de_musicas_na_lista`
 
 ```c
 int consultar_qtd_de_musicas_na_lista(Lista li);
 ```
 
-Consulta a **quantidade de músicas presentes na lista**.
+Retorna a **quantidade de músicas armazenadas na lista**.
 
-Retorna um `int`.
-
-Exemplo:
+### Exemplo
 
 ```text
-[A] -> [B] -> [C] -> NULL
-
-Quantidade = 3
+[Musica A] -> [Musica B] -> [Musica C]
 ```
 
-Essa operação permite saber quantas músicas existem atualmente na playlist.
+Quantidade:
+
+```text
+3
+```
+
+### Retorno
+
+```c
+int
+```
+
+Retorna o número de músicas existentes na lista.
 
 ---
 
-## 15. `liberar_destruir_a_lista`
+# 🗑️ `liberar_destruir_a_lista`
 
 ```c
 void liberar_destruir_a_lista(Lista li);
 ```
 
-Responsável por **liberar/destruir a lista**.
+Libera a memória utilizada pela lista.
 
-### `void`
+A função deve percorrer os elementos, liberar cada um deles e, ao final, liberar a própria estrutura da lista.
 
-O `void` indica que a função **não retorna um valor**.
+### Exemplo
 
-Ela realiza uma ação: liberar os recursos utilizados pela lista.
-
-### Parâmetro
-
-`li` é a lista que será destruída.
-
-Conceitualmente:
-
-```text
 Antes:
 
+```text
 Lista
   |
   v
 [A] -> [B] -> [C] -> NULL
-
-
-Depois:
-
-memória da lista e seus elementos
-          ↓
-        liberada
 ```
+
+Depois de destruir:
+
+```text
+Lista
+  |
+  v
+memória liberada
+```
+
+Essa função é importante porque os elementos da lista são criados dinamicamente na memória.
 
 ---
 
-## 16. Resumo das funções
+# 📋 Resumo das funções
 
-| Função | Retorno | Função |
-|---|---|---|
-| `criar_lista` | `Lista` | Cria uma lista |
-| `inserir_no_inicio` | `int` | Insere uma música no início |
-| `inserir_no_final` | `int` | Insere uma música no final |
-| `inserir_por_posicao` | `int` | Insere uma música em uma posição |
-| `remover_a_primeira` | `int` | Remove a primeira música |
-| `remover_a_ultima` | `int` | Remove a última música |
-| `remover_por_posicao` | `int` | Remove uma música por posição |
-| `consultar_a_primeira` | `Musica` | Consulta a primeira música |
-| `consultar_por_posicao` | `Musica` | Consulta uma música por posição |
-| `consultar_qtd_de_musicas_na_lista` | `int` | Consulta a quantidade de músicas |
-| `liberar_destruir_a_lista` | `void` | Libera/destrói a lista |
+| Função | O que faz |
+|---|---|
+| `criar_lista()` | Cria uma lista |
+| `inserir_no_inicio()` | Insere uma música no início |
+| `inserir_no_final()` | Insere uma música no final |
+| `inserir_por_posicao()` | Insere uma música em uma posição |
+| `remover_a_primeira()` | Remove a primeira música |
+| `remover_a_ultima()` | Remove a última música |
+| `remover_por_posicao()` | Remove uma música pela posição |
+| `consultar_a_primeira()` | Consulta a primeira música |
+| `consultar_por_posicao()` | Consulta uma música pela posição |
+| `consultar_qtd_de_musicas_na_lista()` | Consulta a quantidade de músicas |
+| `liberar_destruir_a_lista()` | Libera e destrói a lista |
 
 ---
 
-## 17. Papel do `3-lista.h`
+# 🧠 Visão geral
 
-O `3-lista.h` funciona como a **interface do TAD Lista**.
+O arquivo `3-lista.h` funciona como a **interface do TAD Lista**.
 
-Ele informa:
+Ele informa **quais operações existem**, mas não mostra como elas são implementadas.
 
-> "Estas são as operações que podem ser realizadas sobre uma lista."
-
-Ele não precisa mostrar como essas operações funcionam internamente.
-
-A implementação ficará no arquivo:
+A implementação fica no arquivo:
 
 ```text
-lista.c
+4-lista.c
 ```
 
-Enquanto o uso das funções poderá ser feito pelo:
+Assim, podemos separar o projeto em:
 
 ```text
-main.c
+1-musica.h
+      ↓
+   TAD Musica
+      ↓
+3-lista.h
+      ↓
+   TAD Lista
+      ↓
+4-lista.c
+      ↓
+Implementação das funções
 ```
