@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include "1-musica.h"
-#include "1-musica.h"
+#include "lista.h"
 
 // adicionar_musica(){}; //adicionar no fim da playlist
 // adicionar_musica_posicao(){}; //adicionar em uma posição específica da playlist

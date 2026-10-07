@@ -1,5 +1,6 @@
+#include <stdio.h>
 #include <stdlib.h>
-#include "2-musica.c"
+#include <string.h>
 
 typedef struct musica* Musica;
 

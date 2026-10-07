@@ -1,17 +1,17 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "lista.h"
 
 struct elemento{
-    int valor;
+    Musica valor;
     struct elemento *proximo;
 };
-typedef struct elemento* Elemento;
 
 struct lista{
     int quantidade;
     struct elemento *inicio;
 };
-typedef struct lista* Lista;
+
 
 
 Lista criar_lista(){
@@ -22,35 +22,35 @@ Lista criar_lista(){
     }
     return li;
 }
-
-
-int inserir_no_inicio(Lista li, int valor_inserido){
+ 
+ 
+int inserir_no_inicio(Lista li, Musica valor_inserido){
     Elemento novo = malloc(sizeof(struct elemento));
     if(novo != NULL){
         novo->valor = valor_inserido;
         novo->proximo = li->inicio;
-        li->inicio = novo; 
+        li->inicio = novo;
         li->quantidade++;
-        return 1; // sucesso
+        return 1;
     }
-    return 0; // falha
+    return 0;
 }
-
-
-int inserir_no_final(Lista li, int valor_inserido){
+ 
+ 
+int inserir_no_final(Lista li, Musica valor_inserido){
     Elemento novo = malloc(sizeof(struct elemento));
     if(novo != NULL){
         novo->valor = valor_inserido;
         novo->proximo = NULL;
-
+ 
         if(li->inicio == NULL){
             li->inicio = novo;
             li->quantidade++;
             return 1; // sucesso
         }
-
+ 
         Elemento auxiliar = li->inicio;
-
+ 
         while(auxiliar->proximo != NULL){
             auxiliar = auxiliar->proximo; //"andar"
         }
@@ -60,17 +60,17 @@ int inserir_no_final(Lista li, int valor_inserido){
     }
     return 0; // falha
 }
-
-
-int inserir_por_posicao(Lista li, int posicao, int valor_inserido){
+ 
+ 
+int inserir_por_posicao(Lista li, int posicao, Musica valor_inserido){
     if(posicao < 0 || posicao > li->quantidade){
         return 0; // posição inválida
     }
-
+ 
     Elemento novo = malloc(sizeof(struct elemento));
     if(novo != NULL){
         novo->valor = valor_inserido;
-
+ 
         if(posicao == 0){
             novo->proximo = li->inicio;
             li->inicio = novo;
@@ -87,8 +87,8 @@ int inserir_por_posicao(Lista li, int posicao, int valor_inserido){
     }
     return 0;
 }
-
-
+ 
+ 
 int remover_a_primeira(Lista li){
     if(li->inicio == NULL){
         return 0;
@@ -99,8 +99,8 @@ int remover_a_primeira(Lista li){
     li->quantidade--;
     return 1;
 }
-
-
+ 
+ 
 int remover_a_ultima(Lista li){
     if(li->inicio == NULL){
         return 0;
@@ -122,8 +122,8 @@ int remover_a_ultima(Lista li){
     li->quantidade--;
     return 1;
 }
-
-
+ 
+ 
 int remover_por_posicao(Lista li, int posicao){
     if(posicao < 0 || posicao >= li->quantidade){
         return 0;
@@ -144,19 +144,19 @@ int remover_por_posicao(Lista li, int posicao){
     li->quantidade--;
     return 1;
 }
-
-
-int consultar_a_primeira(Lista li){
+ 
+ 
+Musica consultar_a_primeira(Lista li){
     if(li->inicio == NULL){
-        return -1; // lista vazia
+        return NULL; // lista vazia
     }
     return li->inicio->valor;
 }
-
-
-int consultar_por_posicao(Lista li, int posicao){
+ 
+ 
+Musica consultar_por_posicao(Lista li, int posicao){
     if(posicao < 0 || posicao >= li->quantidade){
-        return -1; // posição inválida
+        return NULL; // posição inválida
     }
     Elemento auxiliar = li->inicio;
     for(int i=0; i<posicao; i++){
@@ -164,13 +164,13 @@ int consultar_por_posicao(Lista li, int posicao){
     }
     return auxiliar->valor;
 }
-
-
+ 
+ 
 int consultar_qtd_de_musicas_na_lista(Lista li){
     return li->quantidade;
 }
-
-
+ 
+ 
 void liberar_destruir_a_lista(Lista li){
     if(li == NULL){
         return;
@@ -179,7 +179,8 @@ void liberar_destruir_a_lista(Lista li){
     while(auxiliar != NULL){
         Elemento atual = auxiliar;
         auxiliar = auxiliar->proximo;
-        free(atual);
+        destruir_musica(atual->valor); 
+        free(atual);               
     }
     free(li);
 }
