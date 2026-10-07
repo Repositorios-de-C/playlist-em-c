@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "lista.h"
+#include "3-lista.h"
 
 struct elemento{
     Musica valor;
