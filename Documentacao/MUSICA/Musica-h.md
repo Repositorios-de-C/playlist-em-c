@@ -11,14 +11,12 @@ Essa separação permite que o `main.c` utilize uma música por meio das funçõ
 ## 📌 Inclusão das bibliotecas
 
 ```c
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 ```
 
 O arquivo inclui três bibliotecas da linguagem C:
 
-- `stdio.h` — disponibiliza recursos relacionados à entrada e saída de dados, como `printf`.
 - `stdlib.h` — possui funções relacionadas à alocação e liberação de memória, como `malloc` e `free`.
 - `string.h` — disponibiliza funções para manipulação de strings.
 
