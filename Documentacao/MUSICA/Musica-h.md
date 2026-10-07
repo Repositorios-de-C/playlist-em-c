@@ -92,7 +92,7 @@ O arquivo disponibiliza três funções para consultar os dados armazenados.
 ## Consultar título
 
 ```c
-char* consultar_titulo(Musica *m);
+char* consultar_titulo(Musica m);
 ```
 
 Retorna o **título** da música.
@@ -104,7 +104,7 @@ O retorno é `char*`, pois o título é armazenado como uma string.
 ## Consultar artista
 
 ```c
-char* consultar_artista(Musica *m);
+char* consultar_artista(Musica m);
 ```
 
 Retorna o **nome do artista** associado à música.
