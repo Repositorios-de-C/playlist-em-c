@@ -1,11 +1,12 @@
 #include <stdio.h>
-#include "1-musica.h"
+#include <stdlib.h>
 
 struct musica{
     char titulo[100];
     char artista[100];
     int duracao;
 };
+typedef struct musica* Musica;
 
 Musica criar_musica(char *titulo, char *artista, int duracao){
     Musica m = malloc(sizeof(struct musica));

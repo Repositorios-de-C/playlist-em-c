@@ -1,7 +1,9 @@
 #include <stdlib.h>
+#include "2-musica.c"
+
 typedef struct musica* Musica;
 
-Musica criar_musica(char *titulo, char *artista, int duracao){};
+Musica criar_musica(char *titulo, char *artista, int duracao);
 
 //consultando os dados da musica
 char* consultar_titulo(Musica m);
